@@ -50,6 +50,11 @@ const EncargadoSchema = new EntitySchema({
         columns: ["rut"],
         unique: true,
         },
+        {
+        name: "IDX_ENCARGADO_EMAIL",
+        columns: ["email"],
+        unique: true,
+        },
     ],
     });
     export default EncargadoSchema;
