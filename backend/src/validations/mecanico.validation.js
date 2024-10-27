@@ -81,7 +81,3 @@ export const mecanicoBodyValidation = Joi.object({
 });
     
 
-export const mecanicoValidation = Joi.object({
-    query: mecanicoQueryValidation,
-    body: mecanicoBodyValidation,
-});

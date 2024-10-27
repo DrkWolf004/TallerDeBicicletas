@@ -80,8 +80,4 @@ email_encargado: Joi.string()
         });
 
 
-export const encargadoValidation = Joi.object({
-query: encargadoQueryValidation,
-body: encargadoBodyValidation,
-});
 
