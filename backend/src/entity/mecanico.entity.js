@@ -69,6 +69,10 @@ const MecanicoSchema = new EntitySchema({
         columns: ["telefono"],
         unique: true,
     },
+    {
+        name: "IDX_MECANICO_DISPONIBILIDAD",
+        columns: ["disponibilidad"],
+    },
     ],
 });
 
