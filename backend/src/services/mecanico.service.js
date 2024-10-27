@@ -5,7 +5,7 @@ import { comparePassword, encryptPassword } from "../helpers/bcrypt.helper";
 
 export async function getMecanicoService(query) {
     try {
-        const { rut, id, email } = query;
+        const { rut, id, email, nombreCompleto, telefono, disponibilidad, horas } = query;
         const mecanicoRepository = AppDataSource.getRepository(Mecanico);
         const mecanicoFound = await mecanicoRepository.findOne({
             where: [{ id: id }, { rut: rut }, { email: email }],

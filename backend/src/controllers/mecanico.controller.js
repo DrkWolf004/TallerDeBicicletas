@@ -18,7 +18,7 @@ import{
 
 export async function getMecanico(req, res) {
     try {
-        const { rut, id, email, nombreCompleto, telefono, disponibilidad } = req.query;
+        const { rut, id, email, nombreCompleto, telefono, disponibilidad, horas } = req.query;
 
         const { error } = mecanicoQueryValidation.validate({ rut, id, email });
 
