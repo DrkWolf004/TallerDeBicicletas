@@ -71,3 +71,5 @@ const MecanicoSchema = new EntitySchema({
     },
     ],
 });
+
+export default MecanicoSchema;

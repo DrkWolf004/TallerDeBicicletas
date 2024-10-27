@@ -62,3 +62,6 @@ const ProveedorSchema = new EntitySchema({
      
     ],
     });
+
+
+export default ProveedorSchema;
