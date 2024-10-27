@@ -22,6 +22,7 @@ id_encargado: Joi.number()
 rut_encargado: Joi.string()
 .min(9)
 .max(12)
+.pattern(/^(?:(?:[1-9]\d{0}|[1-2]\d{1})(\.\d{3}){2}|[1-9]\d{6}|[1-2]\d{7}|29\.999\.999|29999999)-[\dkK]$/)
 .messages({
 "string.base": "El rut debe ser una cadena de texto.",
 "string.min": "El rut debe tener al menos 9 caracteres.",
@@ -50,6 +51,7 @@ rut_encargado: Joi.string()
 .min(9)
 .max(12)
 .required()
+.pattern(/^(?:(?:[1-9]\d{0}|[1-2]\d{1})(\.\d{3}){2}|[1-9]\d{6}|[1-2]\d{7}|29\.999\.999|29999999)-[\dkK]$/)
 .messages({
 "string.base": "El rut debe ser una cadena de texto.",
 "string.min": "El rut debe tener al menos 9 caracteres.",
@@ -64,8 +66,19 @@ email_encargado: Joi.string()
 "string.email": "El correo electrónico debe ser válido.",
 "any.required": "El correo electrónico es obligatorio.",
 }),
-}
-);
+})
+    .or(
+        "id_encargado",
+        "rut_encargado",
+        "email_encargado"
+        )
+    .unknown(false)
+    .messages({
+        "object.unknown": "No se permiten propiedades adicionales.",
+        "object.missing":
+        "Debes proporcionar al menos un parámetro: id_encargado, email_encargado o rut_encargado.",
+        });
+
 
 export const encargadoValidation = Joi.object({
 query: encargadoQueryValidation,
