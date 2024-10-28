@@ -22,3 +22,4 @@ router
   .delete("/detail/", deleteUser);
 
 export default router;""
+
