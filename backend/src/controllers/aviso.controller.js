@@ -46,7 +46,7 @@ export async function getAviso(req, res) {
     
         handleSuccess(res, 200, "Aviso de producto encontrado", aviso);
       } catch (error) {
-        handleErrorServer(res, 500, error.message);
+        console.error("Error creando el aviso", error);
       }
 }
 
@@ -55,11 +55,15 @@ export async function getAvisos(req, res) {
         const [avisos, errorAvisos] = await getAvisosService();
         if (errorAvisos) return handleErrorClient(res, 404, errorAvisos);
 
-        avisos.length === 0
-      ? handleSuccess(res, 204)
-      : handleSuccess(res, 200, "Avisos de productos encontrados", avisos);
+
+        if(errorAvisos) return handleErrorClient(res, 404, errorAvisos);
+
+        avisos.length===0
+        ?handleSuccess(res, 204)
+        : handleSuccess(res, 200, "Avisos encontrados", avisos);
+
     } catch (error) {
-        console.error("Error al obtener los avisos", error);
+        handleErrorServer(res, 500, error.message);
     }
 }
 
@@ -94,9 +98,11 @@ export async function getAvisos(req, res) {
   
       const [aviso, avisoError] = await updateAvisoService({ id }, body);
   
+
       if (avisoError) return handleErrorClient(res, 400, "Error modificando el aviso de produto", avisoError);
   
       handleSuccess(res, 200, "Aviso de producto modificado correctamente", aviso);
+
     } catch (error) {
       handleErrorServer(res, 500, error.message);
     }
