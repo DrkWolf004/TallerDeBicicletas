@@ -22,7 +22,7 @@ export const AvisoQueryValidation = Joi.object({
 export const TextoBodyValidation = Joi.object({
     texto: Joi.string()
     .min(4)
-    .max(12)
+    .max(40)
     .pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)
     .messages({
       "string.empty": "El texto de product no puede estar vacío.",
