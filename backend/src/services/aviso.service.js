@@ -32,7 +32,7 @@ export async function getAvisoService(query) {
     try {
         const { id } = query;
 
-        const avisoRepository = AppDataSource.getRepository(aviso);
+        const avisoRepository = AppDataSource.getRepository(Aviso);
 
         const avisoFound = await avisoRepository.findOne({
             where: { id: id },
@@ -52,7 +52,7 @@ export async function getAvisoService(query) {
 
 export async function getAvisosService() {
     try {
-        const avisoRepository = AppDataSource.getRepository(aviso);
+        const avisoRepository = AppDataSource.getRepository(Aviso);
 
         const avisos = await avisoRepository.find();
 
@@ -113,9 +113,9 @@ export async function updateAvisoService(query, body){
     }
 }
 
-export async function deleteAvisoService(req, res) {
+export async function deleteAvisoService(query) {
     try {
-        const { id } = req.query;
+        const { id } = query;
   
         const avisoRepository = AppDataSource.getRepository(Aviso);
     
