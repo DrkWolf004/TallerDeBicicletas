@@ -18,10 +18,13 @@ import{
 
 export async function createAviso(req, res) {
     try {
-        const texto = req.texto;
-        const avisosaved = await createAvisoService(value);
+        const texto = req.body;
+        const { value, error } = TextoBodyValidation.validate(texto);
+
         if(error) return handleErrorClient(res, 400, error.message);
+
         handleSuccess(res, 201, "Aviso creado", avisosaved);
+
     } catch (error) {
         console.error("Error al crear el aviso", error);
     }
@@ -36,21 +39,27 @@ export async function getAviso(req, res) {
     
         if (error) return handleErrorClient(res, 400, error.message);
     
-        const [tipo, errorTipo] = await getTproductoService({ id });
+        const [texto, erroraviso] = await getAvisoService({ id });
     
-        if (errorTipo) return handleErrorClient(res, 404, errorTipo);
+        if (erroraviso) return handleErrorClient(res, 404, errorAvisos);
     
-        handleSuccess(res, 200, "Tipo de producto encontrado", tipo);
+        handleSuccess(res, 201, "Aviso encontrado", avisosaved);
       } catch (error) {
-        handleErrorServer(res, 500, error.message);
+        console.error("Error creando el aviso", error);
       }
 }
 
 export async function getAvisos(req, res) {
     try {
         const [avisos, errorAvisos] = await getAvisosService();
+
+        if(errorAvisos) return handleErrorClient(res, 404, errorAvisos);
+
+        avisos.length===0
+        ?handleSuccess(res, 204)
+        : handleSuccess(res, 200, "Avisos encontrados", avisos);
     } catch (error) {
-        console.error("Error al obtener los avisos", error);
+        handleErrorServer(res, 500, error.message);
     }
 }
 
@@ -83,21 +92,21 @@ export async function getAvisos(req, res) {
           bodyError.message,
         );
   
-      const [tipo, tipoError] = await updateTproductoService({ id }, body);
+      const [aviso, avisoError] = await updateAvisoService({ id }, body);
   
-      if (tipoError) return handleErrorClient(res, 400, "Error modificando el tipo de produto", tipoError);
+      if (avisoError) return handleErrorClient(res, 400, "Error modificando el aviso", avisoError);
   
-      handleSuccess(res, 200, "Tipo de producto modificado correctamente", tipo);
+      handleSuccess(res, 200, "Aviso modificado correctamente", tipo);
     } catch (error) {
       handleErrorServer(res, 500, error.message);
     }
   }
   
-  export async function deleteTipo(req, res) {
+  export async function deleteAviso(req, res) {
     try {
       const { id } = req.query;
   
-      const { error: queryError } = TipoQueryValidation.validate({
+      const { error: queryError } = AvisoQueryValidation.validate({
         id,
       });
   
@@ -116,7 +125,7 @@ export async function getAvisos(req, res) {
   
       if (erroravisoDelete) return handleErrorClient(res, 404, "Error eliminado al aviso", erroravisoDelete);
   
-      handleSuccess(res, 200, "Aviso eliminado correctamente", tipoDelete);
+      handleSuccess(res, 200, "Aviso eliminado correctamente", avisoDelete);
     } catch (error) {
       handleErrorServer(res, 500, error.message);
     }
