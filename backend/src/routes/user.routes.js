@@ -21,4 +21,5 @@ router
   .patch("/detail/", updateUser)
   .delete("/detail/", deleteUser);
 
-export default router;
+export default router;""
+
