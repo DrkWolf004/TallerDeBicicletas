@@ -3,7 +3,7 @@ import { Router } from "express";
 import { authenticateJwt } from "../middlewares/authentication.middleware.js";
 import { isAdmin } from "../middlewares/authorization.middleware.js";
 import {
-    createProveedor,
+    createproveedor,
     deleteProveedor,
     getProveedor,
     getProveedores,
@@ -12,14 +12,14 @@ import {
 
 const router = Router();
 
-router 
+/*router 
     .use(authenticateJwt)
     .use(isAdmin);
-
+*/
 router
-    .get("/", getProveedores)
     .get("/detail/", getProveedor)
-    .post("/", createProveedor)
+    .get("/", getProveedores)
+    .post("/post/", createproveedor)
     .patch("/detail/", updateProveedor)
     .delete("/detail/", deleteProveedor);
 

@@ -11,7 +11,7 @@ const domainEmailValidator = (value, helper) => {
 };
 
 export const proveedorQueryValidation = Joi.object({
-  id_proveedor: Joi.number()
+  id: Joi.number()
     .integer()
     .positive()
     .messages({
@@ -19,28 +19,41 @@ export const proveedorQueryValidation = Joi.object({
       "number.positive": "El id debe ser un número positivo.",
       "number.integer": "El id debe ser un número entero.",
     }),
-  rut_proveedor: Joi.string()
-    .min(9)
-    .max(12)
-    .pattern(
-      /^(?:(?:[1-9]\d{0}|[1-2]\d{1})(\.\d{3}){2}|[1-9]\d{6}|[1-2]\d{7}|29\.999\.999|29999999)-[\dkK]$/
-    )
+    nombre: Joi.string()
+    .min(3)
+    .max(255)
     .messages({
-      "string.base": "El rut debe ser una cadena de texto.",
-      "string.min": "El rut debe tener al menos 9 caracteres.",
-      "string.max": "El rut debe tener 12 caracteres o menos.",
+      "string.base": "El nombre debe ser una cadena de texto.",
+      "string.min": "El nombre debe tener al menos 3 caracteres.",
+      "string.max": "El nombre debe tener 255 caracteres o menos.",
     }),
-  email_proveedor: Joi.string()
+  
+  email: Joi.string()
     .email({ tlds: { allow: false } })
     .messages({
       "string.base": "El correo electrónico debe ser una cadena de texto.",
       "string.email": "El correo electrónico debe ser válido.",
     }),
-
+  telefono: Joi.string()
+    .min(9)
+    .max(12)
+    .messages({
+      "string.base": "El teléfono debe ser una cadena de texto.",
+      "string.min": "El teléfono debe tener al menos 9 caracteres.",
+      "string.max": "El teléfono debe tener 12 caracteres o menos.",
+    }),
+  direccion: Joi.string()
+    .min(3)
+    .max(255)
+    .messages({
+      "string.base": "La dirección debe ser una cadena de texto.",
+      "string.min": "La dirección debe tener al menos 3 caracteres.",
+      "string.max": "La dirección debe tener 255 caracteres o menos.",
+    }),
 });
 
 export const proveedorBodyValidation = Joi.object({
-    nombre_completo: Joi.string()
+    nombre: Joi.string()
         .min(3)
         .max(255)
         .required()
@@ -50,29 +63,54 @@ export const proveedorBodyValidation = Joi.object({
         "string.max": "El nombre debe tener 255 caracteres o menos.",
         "any.required": "El nombre es obligatorio.",
         }),
-    rut_proveedor: Joi.string()
+        email: Joi.string()
+        .min(15)
+        .max(35)
+        .email()
+        .messages({
+        "string.empty": "El correo electrónico no puede estar vacío.",
+        "string.base": "El correo electrónico debe ser de tipo string.",
+        "string.email": "El correo electrónico debe finalizar en @gmail.cl.",
+        "string.min":
+        "El correo electrónico debe tener como mínimo 15 caracteres.",
+        "string.max":
+        "El correo electrónico debe tener como máximo 35 caracteres.",
+        })
+        .custom(domainEmailValidator, "Validación dominio email"),
+        telefono: Joi.string()
         .min(9)
         .max(12)
         .required()
-        .pattern(
-        /^(?:(?:[1-9]\d{0}|[1-2]\d{1})(\.\d{3}){2}|[1-9]\d{6}|[1-2]\d{7}|29\.999\.999|29999999)-[\dkK]$/
-        )
         .messages({
-        "string.base": "El rut debe ser una cadena de texto.",
-        "string.min": "El rut debe tener al menos 9 caracteres.",
-        "string.max": "El rut debe tener 12 caracteres o menos.",
-        "any.required": "El rut es obligatorio.",
+        "string.base": "El teléfono debe ser una cadena de texto.",
+        "string.min": "El teléfono debe tener al menos 9 caracteres.",
+        "string.max": "El teléfono debe tener 12 caracteres o menos.",
+        "any.required": "El teléfono es obligatorio.",
         }),
-    })
-    .or("rut_proveedor", "email_proveedor")
-    .unknown(false)
-    .messages({
-        "object.unknown": "No se permiten propiedades adicionales.",
-        "object.missing":
-        "Debes proporcionar al menos un parámetro: rut_proveedor o email_proveedor.",
-    });
-
-
+    direccion: Joi.string()
+        .min(3)
+        .max(255)
+        .required()
+        .messages({
+        "string.base": "La dirección debe ser una cadena de texto.",
+        "string.min": "La dirección debe tener al menos 3 caracteres.",
+        "string.max": "La dirección debe tener 255 caracteres o menos.",
+        "any.required": "La dirección es obligatoria.",
+        })
+      })
+        .or(
+          "nombre",
+          "email",
+          "telefono",
+          "direccion",
+        )
+        .unknown(false)
+        .messages({
+          "object.unknown": "No se permiten propiedades adicionales.",
+          "object.missing":
+          "Debes proporcionar al menos un campo: nombreCompleto, email, password, newPassword, rut o rol.",
+        });
+  
 
 
     

@@ -50,6 +50,11 @@ const ProveedorSchema = new EntitySchema({
         unique: true,
         },
         {
+        name: "IDX_PROVEEDOR_NOMBRE",
+        columns: ["nombre"],
+        unique: true,
+        },
+        {
         name: "IDX_PROVEEDOR_EMAIL",
         columns: ["email"],
         unique: true,
@@ -59,7 +64,12 @@ const ProveedorSchema = new EntitySchema({
         columns: ["telefono"],
         unique: true,
         },
-     
+        {
+        name: "IDX_PROVEEDOR_DIRECCION",
+        columns: ["direccion"],
+        unique: true,
+        },
+
     ],
     });
 

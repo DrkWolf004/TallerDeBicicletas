@@ -1,7 +1,7 @@
 "use strict";
-import Mecanico from "../entity/mecanico.entity";
-import { AppDataSource } from "../config/configDb";
-import { comparePassword, encryptPassword } from "../helpers/bcrypt.helper";
+import Mecanico from "../entity/mecanico.entity.js";
+import { AppDataSource } from "../config/configDb.js";
+import { comparePassword, encryptPassword } from "../helpers/bcrypt.helper.js";
 
 export async function getMecanicoService(query) {
     try {
