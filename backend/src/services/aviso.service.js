@@ -1,12 +1,11 @@
 "use strict";
-import { query } from "express";
 import Aviso from "../entity/aviso.entity.js";
 import { AppDataSource } from "../config/configDb.js";
 
 export async function createAvisoService(dataAviso) {
     try {
         const avisoRepository = AppDataSource.getRepository(Aviso);
-
+        /*
         const existingAviso = await avisoRepository.findOne({
             where: [{ aviso: dataAviso.aviso }],
         });
@@ -14,9 +13,10 @@ export async function createAvisoService(dataAviso) {
         if(existingAviso != null){
             return[null, "Ya existe este aviso"];
         }
-
+        */
         const newAviso = avisoRepository.create({
-            aviso: dataAviso.aviso
+            texto: dataAviso.texto,
+            resuelto: false
         });
 
         const avisosaved = await avisoRepository.save(newAviso);
