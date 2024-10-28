@@ -3,6 +3,7 @@ import Mecanico from "../entity/mecanico.entity.js";
 import { AppDataSource } from "../config/configDb.js";
 import { comparePassword, encryptPassword } from "../helpers/bcrypt.helper.js";
 
+
 export async function createMecanicoService(body) {
     try {
         const mecanicoRepository = AppDataSource.getRepository(Mecanico);
@@ -37,6 +38,8 @@ export async function getMecanicoService({ id, rut, email }) {
         console.error("Error al obtener el mecanico:", error);
         return [null, "Error interno del servidor"];
     }
+
+
 }
 
 export async function getMecanicosService() {

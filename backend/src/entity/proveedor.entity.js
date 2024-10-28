@@ -1,25 +1,19 @@
 "use strict";
 import { EntitySchema } from "typeorm";
 
-const MecanicoSchema = new EntitySchema({
-    name: "Mecanico",
-    tableName: "mecanicos",
+const ProveedorSchema = new EntitySchema({
+    name: "Proveedor",
+    tableName: "proveedores",
     columns: {
         id: {
         type: "int",
         primary: true,
         generated: true,
         },
-        nombreCompleto: {
+        nombre: {
         type: "varchar",
         length: 255,
         nullable: false,
-        },
-        rut: {
-        type: "varchar",
-        length: 12,
-        nullable: false,
-        unique: true,
         },
         email: {
         type: "varchar",
@@ -27,17 +21,14 @@ const MecanicoSchema = new EntitySchema({
         nullable: false,
         unique: true,
         },
-        disponibilidad: {
-        type: "boolean",
-        nullable: false,
-        },
         telefono: {
         type: "varchar",
         length: 12,
         nullable: false,
         },
-        horas: {
-        type: "int",
+        direccion: {
+        type: "varchar",
+        length: 255,
         nullable: false,
         },
         createdAt: {
@@ -54,32 +45,33 @@ const MecanicoSchema = new EntitySchema({
     },
     indices: [
         {
-        name: "IDX_MECANICO",
+        name: "IDX_PROVEEDOR",
         columns: ["id"],
         unique: true,
         },
         {
-        name: "IDX_MECANICO_RUT",
-        columns: ["rut"],
+        name: "IDX_PROVEEDOR_NOMBRE",
+        columns: ["nombre"],
         unique: true,
-
         },
         {
-        name: "IDX_MECANICO_EMAIL",
+        name: "IDX_PROVEEDOR_EMAIL",
         columns: ["email"],
         unique: true,
         },
         {
-        name: "IDX_MECANICO_TELEFONO",
+        name: "IDX_PROVEEDOR_TELEFONO",
         columns: ["telefono"],
         unique: true,
         },
         {
-        name: "IDX_MECANICO_DISPONIBILIDAD",
-        columns: ["disponibilidad"],
+        name: "IDX_PROVEEDOR_DIRECCION",
+        columns: ["direccion"],
+        unique: true,
         },
 
     ],
-});
+    });
 
-export default MecanicoSchema;
+
+export default ProveedorSchema;

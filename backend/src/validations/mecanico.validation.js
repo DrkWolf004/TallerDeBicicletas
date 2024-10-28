@@ -4,6 +4,7 @@ import Joi from "joi";
 const domainEmailValidator = (value, helper) => {
     if (!value.endsWith("@gmail.cl")) {
         return helper.message(
+
             "El correo electrónico debe ser del dominio @gmail.cl"
         );
     }
@@ -95,3 +96,4 @@ export const mecanicoBodyValidation = Joi.object({
             "any.required": "Las horas son obligatorias.",
         }),
 });
+
