@@ -14,49 +14,54 @@ import{
 } from "../validations/TipoProducto.validation.js";
 
 import {
-    deleteUserService,
-    getUserService,
-    getUsersService,
-    updateUserService,
-  } from "../services/user.service.js";
-
-import {
-  userBodyValidation,
-  userQueryValidation,
-} from "../validations/user.validation.js";
-import {
   handleErrorClient,
   handleErrorServer,
   handleSuccess,
 } from "../handlers/responseHandlers.js";
 
+export async function postTipo(req,res) {
+    try{
+        const tipo = req.body
+
+        const { value, error } = TipoBodyValidation.validate(tipo);
+
+        if(error) return handleErrorClient(res, 400, error.message);
+
+        const tiposaved = await createTproductoService(value);
+
+        handleSuccess(res, 201, "Tipo de producto creado", tiposaved);
+    }catch(error){
+        console.error("Error al crear el tipo de producto:",error);
+    }
+}
+
 export async function getTipo(req, res) {
   try {
-    const { id, tipo } = req.query;
+    const { id } = req.query;
 
-    const { error } = userQueryValidation.validate({ rut, id, email });
+    const { error } = TipoQueryValidation.validate({ id });
 
     if (error) return handleErrorClient(res, 400, error.message);
 
-    const [user, errorUser] = await getUserService({ rut, id, email });
+    const [tipo, errorTipo] = await getTproductoService({ id });
 
-    if (errorUser) return handleErrorClient(res, 404, errorUser);
+    if (errorTipo) return handleErrorClient(res, 404, errorTipo);
 
-    handleSuccess(res, 200, "Usuario encontrado", user);
+    handleSuccess(res, 200, "Tipo de producto encontrado", tipo);
   } catch (error) {
     handleErrorServer(res, 500, error.message);
   }
 }
 
-export async function getUsers(req, res) {
+export async function getTipos(req, res) {
   try {
-    const [users, errorUsers] = await getUsersService();
+    const [tipos, errorTipos] = await getTproductosService();
 
-    if (errorUsers) return handleErrorClient(res, 404, errorUsers);
+    if (errorTipos) return handleErrorClient(res, 404, errorTipos);
 
-    users.length === 0
+    tipos.length === 0
       ? handleSuccess(res, 204)
-      : handleSuccess(res, 200, "Usuarios encontrados", users);
+      : handleSuccess(res, 200, "Tipos de productos encontrados", tipos);
   } catch (error) {
     handleErrorServer(
       res,
@@ -66,15 +71,13 @@ export async function getUsers(req, res) {
   }
 }
 
-export async function updateUser(req, res) {
+export async function updateTipo(req, res) {
   try {
-    const { rut, id, email } = req.query;
+    const { id } = req.query;
     const { body } = req;
 
-    const { error: queryError } = userQueryValidation.validate({
-      rut,
+    const { error: queryError } = TipoQueryValidation.validate({
       id,
-      email,
     });
 
     if (queryError) {
@@ -86,7 +89,7 @@ export async function updateUser(req, res) {
       );
     }
 
-    const { error: bodyError } = userBodyValidation.validate(body);
+    const { error: bodyError } = TipoBodyValidation.validate(body);
 
     if (bodyError)
       return handleErrorClient(
@@ -96,24 +99,22 @@ export async function updateUser(req, res) {
         bodyError.message,
       );
 
-    const [user, userError] = await updateUserService({ rut, id, email }, body);
+    const [tipo, tipoError] = await updateTproductoService({ id }, body);
 
-    if (userError) return handleErrorClient(res, 400, "Error modificando al usuario", userError);
+    if (tipoError) return handleErrorClient(res, 400, "Error modificando el tipo de produto", tipoError);
 
-    handleSuccess(res, 200, "Usuario modificado correctamente", user);
+    handleSuccess(res, 200, "Tipo de producto modificado correctamente", tipo);
   } catch (error) {
     handleErrorServer(res, 500, error.message);
   }
 }
 
-export async function deleteUser(req, res) {
+export async function deleteTipo(req, res) {
   try {
-    const { rut, id, email } = req.query;
+    const { id } = req.query;
 
-    const { error: queryError } = userQueryValidation.validate({
-      rut,
+    const { error: queryError } = TipoQueryValidation.validate({
       id,
-      email,
     });
 
     if (queryError) {
@@ -125,15 +126,13 @@ export async function deleteUser(req, res) {
       );
     }
 
-    const [userDelete, errorUserDelete] = await deleteUserService({
-      rut,
+    const [tipoDelete, errorTipoDelete] = await deleteTproductoService({
       id,
-      email,
     });
 
-    if (errorUserDelete) return handleErrorClient(res, 404, "Error eliminado al usuario", errorUserDelete);
+    if (errorTipoDelete) return handleErrorClient(res, 404, "Error eliminado al usuario", errorTipoDelete);
 
-    handleSuccess(res, 200, "Usuario eliminado correctamente", userDelete);
+    handleSuccess(res, 200, "Tipo de producto eliminado correctamente", tipoDelete);
   } catch (error) {
     handleErrorServer(res, 500, error.message);
   }

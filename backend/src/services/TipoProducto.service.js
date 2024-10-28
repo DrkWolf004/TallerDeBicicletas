@@ -29,17 +29,17 @@ export async function createTproductoService(dataTipo) {
 
 export async function getTproductoService(query) {
     try {
-      const { id, tipo } = query;
+      const { id } = query;
   
       const tipoRepository = AppDataSource.getRepository(Tproducto);
   
       const TproductoFound = await tipoRepository.findOne({
-        where: [{ id: id }, { tipo: tipo }],
+        where: { id: id },
       });
   
       if (!TproductoFound) return [null, "Tipo de producto no encontrado"];
   
-      const { TproductoData } = TproductoFound;
+      const TproductoData  = TproductoFound;
   
       return [TproductoData, null];
     } catch (error) {
@@ -56,7 +56,7 @@ export async function getTproductoService(query) {
   
       if (!tipos|| tipos.length === 0) return [null, "No hay tipos de producto"];
   
-      const tiposData = tipos.map(({ tipop }) => tipop);
+      const tiposData = tipos.map(({ tipo }) => tipo);
   
       return [tiposData, null];
     } catch (error) {
@@ -72,13 +72,13 @@ export async function getTproductoService(query) {
       const tipoRepository = AppDataSource.getRepository(Tproducto);
   
       const tipoFound = await tipoRepository.findOne({
-        where: [{ id: id }],
+        where: { id: id },
       });
   
       if (!tipoFound) return [null, "Tipo de producto no encontrado"];
   
       const existingTipo = await tipoRepository.findOne({
-        where: [{ tipo: body.tipo }],
+        where: { tipo: body.tipo },
       });
   
       if (existingTipo && existingTipo.id !== tipoFound.id) {
@@ -91,7 +91,7 @@ export async function getTproductoService(query) {
       };
   
   
-      await tipoRepository.update({ id: tipoFound.id }, dataTipoUpdate);
+      await tipoRepository.update({ id: tipoFound.id }, datatipoUpdate);
   
       const tipoData = await tipoRepository.findOne({
         where: { id: tipoFound.id },
@@ -101,7 +101,7 @@ export async function getTproductoService(query) {
         return [null, "Tipo de producto no encontrado después de actualizar"];
       }
   
-      const { tipoUpdated } = userData;
+      const tipoUpdated  = tipoData;
   
       return [tipoUpdated, null];
     } catch (error) {
@@ -112,12 +112,12 @@ export async function getTproductoService(query) {
   
   export async function deleteTproductoService(query) {
     try {
-      const { id, tipo } = query;
+      const { id } = query;
   
       const tipoRepository = AppDataSource.getRepository(Tproducto);
   
       const tipoFound = await tipoRepository.findOne({
-        where: [{ id: id }, { tipo: tipo }],
+        where: [{ id: id }],
       });
   
       if (!tipoFound) return [null, "Tipo de producto no encontrado"];
