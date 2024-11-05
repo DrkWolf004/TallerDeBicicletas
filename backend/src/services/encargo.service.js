@@ -77,25 +77,23 @@ export async function updateEncargoService(query, body) {
         const { id } = query;
         const encargoRepository = AppDataSource.getRepository(Encargo);
 
-        const encargoFound = await encargoRepository.findOne({
-            where: { id: id },
-        });
 
+        const encargoFound = await encargoRepository.findOne({ where: { id } });
         if (!encargoFound) return [null, "Encargo no encontrado"];
 
+
         const encargoUpdateData = {
-            tarea: body.tarea,
-            horas: body.horas,
-            estado: body.estado,
+            ...body.tarea !== undefined && { tarea: body.tarea },
+            ...body.horas !== undefined && { horas: body.horas },
+            ...body.estado !== undefined && { estado: body.estado },
+            ...body.detalle !== undefined && { detalle: body.detalle },
             updatedAt: new Date(),
         };
 
         await encargoRepository.update({ id: encargoFound.id }, encargoUpdateData);
 
-        const encargoUpdated = await encargoRepository.findOne({
-            where: { id: encargoFound.id },
-        });
 
+        const encargoUpdated = await encargoRepository.findOne({ where: { id } });
         if (!encargoUpdated) {
             return [null, "Encargo no encontrado después de actualizar"];
         }

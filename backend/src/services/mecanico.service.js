@@ -3,7 +3,6 @@ import Mecanico from "../entity/mecanico.entity.js";
 import { AppDataSource } from "../config/configDb.js";
 import { comparePassword, encryptPassword } from "../helpers/bcrypt.helper.js";
 
-
 export async function createMecanicoService(body) {
     try {
         const mecanicoRepository = AppDataSource.getRepository(Mecanico);
@@ -38,8 +37,6 @@ export async function getMecanicoService({ id, rut, email }) {
         console.error("Error al obtener el mecanico:", error);
         return [null, "Error interno del servidor"];
     }
-
-
 }
 
 export async function getMecanicosService() {
@@ -86,10 +83,15 @@ export async function deleteMecanicoService(query) {
     try {
         const { id, rut, email } = query;
         const mecanicoRepository = AppDataSource.getRepository(Mecanico);
-        const mecanicoFound = await mecanicoRepository.findOne({
-            where: [{ id: id }, { rut: rut }, { email: email }],
-        });
+        const whereConditions = {};
+        if (id) whereConditions.id = id;
+        if (rut) whereConditions.rut = rut;
+        if (email) whereConditions.email = email;
+
+        const mecanicoFound = await mecanicoRepository.findOne({ where: whereConditions });
+
         if (!mecanicoFound) return [null, "Mecanico no encontrado"];
+
         await mecanicoRepository.remove(mecanicoFound);
         return [mecanicoFound, null];
     } catch (error) {
