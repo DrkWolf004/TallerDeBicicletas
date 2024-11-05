@@ -8,6 +8,7 @@ import {
 } from "../services/encargo.service.js";
 import {
     encargoBodyValidation,
+    encargoPatchValidation,
     encargoQueryValidation,
 } from "../validations/encargo.validation.js";
 import{
@@ -58,30 +59,17 @@ export async function getEncargos(req, res) {
 
 export async function updateEncargo(req, res) {
     try {
-        const { id, nombreCliente, telCliente, mecanicoAsignado } = req.query;
+        const { id } = req.query;
         const { body } = req;
 
-        const { error: queryError } = encargoQueryValidation.validate({
-            id,
-            nombreCliente,
-            telCliente,
-            mecanicoAsignado,
-        });
-
+        const { error: queryError } = encargoQueryValidation.validate({ id });
         if (queryError) return handleErrorClient(res, 400, queryError.message);
 
-        const { error: bodyError } = encargoBodyValidation.validate(body);
 
+        const { error: bodyError } = encargoPatchValidation.validate(body);
         if (bodyError) return handleErrorClient(res, 400, bodyError.message);
 
-        const [encargo, errorEncargo] = await updateEncargoService({
-            id,
-            nombreCliente,
-            telCliente,
-            mecanicoAsignado,
-            ...body
-        });
-
+        const [encargo, errorEncargo] = await updateEncargoService({ id }, body);
         if (errorEncargo) return handleErrorClient(res, 404, errorEncargo);
 
         handleSuccess(res, 200, "Encargo actualizado", encargo);
@@ -90,11 +78,9 @@ export async function updateEncargo(req, res) {
     }
 }
 
-
-
 export async function deleteEncargo(req, res) {
     try {
-        const { id } = req.params; // Cambia a usar params para el ID
+        const { id } = req.params; 
 
         const { error } = encargoQueryValidation.validate({ id });
 
