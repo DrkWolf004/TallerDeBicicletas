@@ -50,7 +50,7 @@ export async function getEncargoService({ id }) {
 
         if (!encargoFound) return [null, "Encargo no encontrado"];
 
-        return [encargoFound, null]; // Aquí deberías retornar el encargo encontrado
+        return [encargoFound, null]; 
     } catch (error) {
         console.error("Error al obtener el encargo:", error);
         return [null, "Error interno del servidor"];
