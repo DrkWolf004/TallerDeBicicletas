@@ -3,20 +3,40 @@ import Mecanico from "../entity/mecanico.entity.js";
 import { AppDataSource } from "../config/configDb.js";
 import { comparePassword, encryptPassword } from "../helpers/bcrypt.helper.js";
 
-export async function getMecanicoService(query) {
+export async function createMecanicoService(body) {
     try {
-        const { rut, id, email, nombreCompleto, telefono, disponibilidad, horas } = query;
         const mecanicoRepository = AppDataSource.getRepository(Mecanico);
-        const mecanicoFound = await mecanicoRepository.findOne({
-            where: [{ id: id }, { rut: rut }, { email: email }],
+        const existingMecanico = await mecanicoRepository.findOne({
+            where: [{ rut: body.rut }, { email: body.email }],
         });
+        if (existingMecanico) return [null, "Ya existe un mecanico con ese rut o email"];
+        const mecanico = await mecanicoRepository.save(body);
+        return [mecanico, null];
+    } catch (error) {
+        console.error("Error al crear al mecanico:", error);
+        return [null, "Error interno del servidor"];
+    }
+}
+export async function getMecanicoService({ id, rut, email }) {
+    try {
+        const mecanicoRepository = AppDataSource.getRepository(Mecanico);
+        const query = {};
+
+        if (id) query.id = id;
+        if (rut) query.rut = rut;
+        if (email) query.email = email;
+
+        const mecanicoFound = await mecanicoRepository.findOne({ where: query });
         if (!mecanicoFound) return [null, "Mecanico no encontrado"];
-        const { password, ...mecanicoData } = mecanicoFound;
+
+        const mecanicoData = { ...mecanicoFound };
+        delete mecanicoData.password;
+
         return [mecanicoData, null];
     } catch (error) {
-        console.error("Error obtener el mecanico:", error);
+        console.error("Error al obtener el mecanico:", error);
         return [null, "Error interno del servidor"];
-    }            
+    }
 }
 
 export async function getMecanicosService() {
@@ -57,29 +77,21 @@ export async function updateMecanicoService(query, body) {
     }
 }
 
-export async function createMecanicoService(body) {
-    try {
-        const mecanicoRepository = AppDataSource.getRepository(Mecanico);
-        const existingMecanico = await mecanicoRepository.findOne({
-            where: [{ rut: body.rut }, { email: body.email }],
-        });
-        if (existingMecanico) return [null, "Ya existe un mecanico con ese rut o email"];
-        const mecanico = await mecanicoRepository.save(body);
-        return [mecanico, null];
-    } catch (error) {
-        console.error("Error al crear al mecanico:", error);
-        return [null, "Error interno del servidor"];
-    }
-}
+
 
 export async function deleteMecanicoService(query) {
     try {
         const { id, rut, email } = query;
         const mecanicoRepository = AppDataSource.getRepository(Mecanico);
-        const mecanicoFound = await mecanicoRepository.findOne({
-            where: [{ id: id }, { rut: rut }, { email: email }],
-        });
+        const whereConditions = {};
+        if (id) whereConditions.id = id;
+        if (rut) whereConditions.rut = rut;
+        if (email) whereConditions.email = email;
+
+        const mecanicoFound = await mecanicoRepository.findOne({ where: whereConditions });
+
         if (!mecanicoFound) return [null, "Mecanico no encontrado"];
+
         await mecanicoRepository.remove(mecanicoFound);
         return [mecanicoFound, null];
     } catch (error) {

@@ -17,10 +17,10 @@ router
     .use(isAdmin);
 
 router
-    .get("/", getMecanicos)
-    .get("/detail/", getMecanico)
-    .post("/", createMecanico)
-    .patch("/detail/", updateMecanico)
-    .delete("/detail/", deleteMecanico);
+    .get("/", getMecanicos)                      
+    .get("/:id", getMecanico)                   
+    .post("/", createMecanico)                  
+    .patch("/:id", updateMecanico)              
+    .delete("/:id", deleteMecanico); 
 
 export default router;
