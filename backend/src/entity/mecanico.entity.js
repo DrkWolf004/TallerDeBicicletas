@@ -62,21 +62,21 @@ const MecanicoSchema = new EntitySchema({
         name: "IDX_MECANICO_RUT",
         columns: ["rut"],
         unique: true,
-    },
-    {
+        },
+        {
         name: "IDX_MECANICO_EMAIL",
         columns: ["email"],
         unique: true,
-    },
-    {
+        },
+        {
         name: "IDX_MECANICO_TELEFONO",
         columns: ["telefono"],
         unique: true,
-    },
-    {
+        },
+        {
         name: "IDX_MECANICO_DISPONIBILIDAD",
         columns: ["disponibilidad"],
-    },
+        },
     ],
 });
 

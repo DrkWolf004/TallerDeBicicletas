@@ -1,5 +1,6 @@
 "use strict";
 import{
+    createMecanicoService,
     deleteMecanicoService,
     getMecanicoService,
     getMecanicosService,
@@ -18,13 +19,12 @@ import{
 
 export async function getMecanico(req, res) {
     try {
-        const { rut, id, email, nombreCompleto, telefono, disponibilidad, horas } = req.query;
-
-        const { error } = mecanicoQueryValidation.validate({ rut, id, email });
+        const { id } = req.params;
+        const { error } = mecanicoQueryValidation.validate({ id });
 
         if (error) return handleErrorClient(res, 400, error.message);
 
-        const [mecanico, errorMecanico] = await getMecanicoService({ rut, id, email });
+        const [mecanico, errorMecanico] = await getMecanicoService({ id });
 
         if (errorMecanico) return handleErrorClient(res, 404, errorMecanico);
 
