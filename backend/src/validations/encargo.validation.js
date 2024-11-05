@@ -1,6 +1,7 @@
 "use strict";
 import Joi from "joi";
 
+
 export const encargoQueryValidation = Joi.object({
     id: Joi.number()
         .integer()
@@ -9,26 +10,6 @@ export const encargoQueryValidation = Joi.object({
             "number.base": "El ID debe ser un número.",
             "number.positive": "El ID debe ser un número positivo.",
             "number.integer": "El ID debe ser un número entero.",
-        }),
-    nombreCliente: Joi.string()
-        .max(255)
-        .messages({
-            "string.base": "El nombre del cliente debe ser una cadena de texto.",
-            "string.max": "El nombre del cliente no puede tener más de 255 caracteres.",
-        }),
-    telCliente: Joi.string()  
-        .max(12)
-        .pattern(/^[0-9]+$/)
-        .messages({
-            "string.base": "El teléfono debe ser una cadena de texto.",
-            "string.length": "El teléfono debe tener exactamente 12 caracteres.",
-            "string.pattern.base": "El teléfono solo puede contener números.",
-        }),
-    mecanicoAsignado: Joi.string()
-        .max(255)
-        .messages({
-            "string.base": "El mecánico asignado debe ser una cadena de texto.",
-            "string.max": "El mecánico asignado no puede tener más de 255 caracteres.",
         }),
 });
 
@@ -95,5 +76,48 @@ export const encargoBodyValidation = Joi.object({
             "number.integer": "Las horas deben ser un número entero.",
             "number.min": "Las horas deben ser al menos 1.",
             "any.required": "Las horas son obligatorias.",
+        }),
+});
+
+export const encargoPatchValidation = Joi.object({
+    nombreCliente: Joi.string()
+        .max(255)
+        .messages({
+            "string.base": "El nombre del cliente debe ser una cadena de texto.",
+            "string.max": "El nombre del cliente no puede tener más de 255 caracteres.",
+        }),
+    telCliente: Joi.string()
+        .max(12)
+        .pattern(/^[0-9]+$/)
+        .messages({
+            "string.base": "El teléfono debe ser una cadena de texto.",
+            "string.length": "El teléfono debe tener exactamente 12 caracteres.",
+            "string.pattern.base": "El teléfono solo puede contener números.",
+        }),
+    tarea: Joi.string()
+        .max(500)
+        .messages({
+            "string.base": "La tarea debe ser una cadena de texto.",
+            "string.max": "La tarea no puede tener más de 500 caracteres.",
+        }),
+    detalle: Joi.string()
+        .max(1500)
+        .messages({
+            "string.base": "El detalle debe ser una cadena de texto.",
+            "string.max": "El detalle no puede tener más de 1500 caracteres.",
+        }),
+    mecanicoAsignado: Joi.string()
+        .max(255)
+        .messages({
+            "string.base": "El mecánico asignado debe ser una cadena de texto.",
+            "string.max": "El mecánico asignado no puede tener más de 255 caracteres.",
+        }),
+    horas: Joi.number()
+        .integer()
+        .min(1)
+        .messages({
+            "number.base": "Las horas deben ser un número.",
+            "number.integer": "Las horas deben ser un número entero.",
+            "number.min": "Las horas deben ser al menos 1.",
         }),
 });
