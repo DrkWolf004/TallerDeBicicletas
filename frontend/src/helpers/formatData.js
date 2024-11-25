@@ -30,3 +30,14 @@ export function formatPostUpdate(user) {
         createdAt: formatTempo(user.createdAt, "DD-MM-YYYY")
     };
 }
+
+//bodeguero
+//Tipo de producto:
+
+export function formatTproductData(tproduct) {
+    return {
+        ...tproduct,
+        tipo: startCase(tproduct.tipo),
+        createdAt: formatTempo(user.createdAt, "DD-MM-YYYY")
+    };
+}

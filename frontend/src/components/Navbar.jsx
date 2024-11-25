@@ -71,7 +71,53 @@ const Navbar = () => {
                             Usuarios
                         </NavLink>
                     </li>
+                    
                     )}
+                    {userRole === 'Bodeguero' || userRole == 'administrador' && (
+                    <li>
+                        <NavLink 
+                            to="/TipoProducto" 
+                            onClick={() => { 
+                                setMenuOpen(false); 
+                                addActiveClass();
+                            }} 
+                            activeClassName="active"
+                        >
+                            TiposDeProducto
+                        </NavLink>
+
+                        <li>
+                        <NavLink 
+                            to="/Producto" 
+                            onClick={() => { 
+                                setMenuOpen(false); 
+                                addActiveClass();
+                            }} 
+                            activeClassName="active"
+                        >
+                            Productos
+                        </NavLink>
+                    </li>
+                    </li>
+                    
+                    )}
+
+                    {userRole != 'Bodeguero' || userRole != 'administrador' && (
+                    <li>
+                        <NavLink 
+                            to="/Producto" 
+                            onClick={() => { 
+                                setMenuOpen(false); 
+                                addActiveClass();
+                            }} 
+                            activeClassName="active"
+                        >
+                            Productos
+                        </NavLink>
+                    </li>
+                    
+                    )}
+                    
                     <li>
                         <NavLink 
                             to="/auth" 
