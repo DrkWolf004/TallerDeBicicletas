@@ -74,6 +74,16 @@ async function createUsers() {
           rol: "usuario",
         }),
       ),
+      //Bodeguero
+      userRepository.save(
+        userRepository.create({
+          nombreCompleto: "Gabriel Sebastian Guzman Cuevas",
+          rut: "21.357.093-5",
+          email: "Bodeguero1.2024@gmail.cl",
+          password: await encryptPassword("Bod1234"),
+          rol: "Bodeguero",
+        }),
+      ),
     ]);
     console.log("* => Usuarios creados exitosamente");
   } catch (error) {
